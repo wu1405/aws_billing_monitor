@@ -22,7 +22,7 @@ $(function () {
             x: -20 //center
         },
         subtitle: {
-            text: 'mobo,voga,cypay',
+            text: 'account1,account2,account3',
             x: -20
         },
         xAxis: {
@@ -51,15 +51,15 @@ $(function () {
         series: [{
             name: 'Mobo Billing Total',
             //data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-            data: {{total_all_mobo}}
+            data: {{total_all_account1}}
         }, 
                 {
                         name: 'Voga Billing Total',
-                        data: {{total_all_voga}}
+                        data: {{total_all_account2}}
                 },
                 {
                         name: 'CYPAY Billing Total',
-                        data: {{total_all_cypay}}
+                        data: {{total_all_account3}}
                 }
         ]
     });
@@ -74,7 +74,7 @@ $(function () {
             x: -20 //center
         },
         subtitle: {
-            text: 'mobo,voga,cypay',
+            text: 'account1,account2,account3',
             x: -20
         },
         xAxis: {
@@ -101,15 +101,15 @@ $(function () {
         },
         series: [{
             name: 'Mobo Billing Daily',
-            data: {{total_today_mobo}}
+            data: {{total_today_account1}}
         },
                          {
                         name: 'Voga Billing Daily',
-                        data: {{total_today_voga}} 
+                        data: {{total_today_account2}} 
                 },
                          {
                         name: 'CYPAY Billing Daily',
-                        data: {{total_today_cypay}} 
+                        data: {{total_today_account3}} 
                 },
         ]
     });

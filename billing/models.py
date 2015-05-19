@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-class Info_mobo(models.Model):
+class Info_account1(models.Model):
 	date = models.DateField()
 	total_today = models.IntegerField(max_length=10)
 	total_all = models.IntegerField(max_length=10)
@@ -14,7 +14,7 @@ class Info_mobo(models.Model):
 #	def __unicode__(self):
 #		return self.total
 	
-class Info_voga(models.Model):
+class Info_account2(models.Model):
 	date = models.DateField()
 	total_today = models.IntegerField(max_length=10)
 	total_all = models.IntegerField(max_length=10)
@@ -25,7 +25,7 @@ class Info_voga(models.Model):
 	emr = models.IntegerField(max_length=10)
 	cloudfront = models.IntegerField(max_length=10)
 
-class Info_cypay(models.Model):
+class Info_account3(models.Model):
 	date = models.DateField()
 	total_today = models.IntegerField(max_length=10)
 	total_all = models.IntegerField(max_length=10)

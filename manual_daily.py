@@ -3,11 +3,12 @@ import MySQLdb
 import logging
 import datetime
 from datetime import timedelta
+import os,sys
 
-def Daily_charge(table):
-	#Now=datetime.date.today()
+def Daily_charge(table,range):
 	#Now=datetime.date.today() + timedelta(days=-5)
-	Yesterday=datetime.date.today() + timedelta(days=-1)
+	#Yesterday=datetime.date.today() + timedelta(days=-1)
+	Yesterday=datetime.date.today() + timedelta(days=-range)
 	OneDayBefore=Yesterday + timedelta(days=-1)
 	
 	conn = MySQLdb.connect(user='root', db='instance', passwd='', host='localhost')
@@ -53,6 +54,5 @@ if __name__ == '__main__':
 		datefmt='%a, %Y-%m-%d %H:%M:%S',
  		filename='debug_Daily.log',
 		filemode='w')
-	Daily_charge('billing_info_account1')  #your billing tables in the db
-	Daily_charge('billing_info_account2')
-	Daily_charge('billing_info_account3')
+	range=int(sys.argv[1])
+	Daily_charge('your_table_name',range)

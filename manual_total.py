@@ -9,17 +9,14 @@ import datetime
 from datetime import timedelta
 import MySQLdb
 
-def Bill(account,id):
+def Bill(account,id,range):
 	billingkey = os.environ.get('%sBill_Key' % account)
 	billingsecret = os.environ.get('%sBill_Secret' % account) 
-	myRegion = get_region('us-east-1')  #create cloudwatch for billing alert first.  the default area is us-east-1
+	myRegion = get_region('us-east-1')
 	conn = boto.ec2.cloudwatch.connect_to_region('us-east-1',aws_access_key_id=billingkey,aws_secret_access_key=billingsecret)
 
 	Metrics=conn.list_metrics(metric_name=u'EstimatedCharges',namespace=u'AWS/Billing')
-	#Last = datetime.datetime(2015,3,26)
-	#Start = datetime.datetime(2015,3,20)
-	Last = datetime.date.today()
-	#Last = datetime.date.today()+timedelta(days=-5)
+	Last = datetime.date.today()+timedelta(days=-range) 
 	during = timedelta(days=-1)
 	Start = Last + during
 
@@ -27,10 +24,11 @@ def Bill(account,id):
 	f=open(file,'w')
 	for metric in Metrics:
 		if  [id]  in metric.dimensions.values() and u'ServiceName' not in metric.dimensions : 
-			#print Start,metric.query(Start,Last,'Average',period=86400)
+		#print Start,metric.query(Start,Last,'Average',period=86400)
 			f.write(str(Start)+'\t'+str(metric.query(Start,Last,'Average',period=86400))+'\n')
 	f.close()
 	
+
 	cost_cmd="echo `cat %s |awk -F':' '{print $3}'|awk -F'.' '{print $1}'`" % file
 	date_cmd="echo `awk '{print $1}' %s`" % file
 	cost=int(os.popen(cost_cmd).read().strip('\n'))
@@ -51,7 +49,6 @@ if __name__ == '__main__':
                 datefmt='%a, %Y-%m-%d %H:%M:%S',
                 filename='debug_billing.log',
                 filemode='w')
-	Bill('account1','xxxxxxx')   #account_name &&  account_id  in aws 
-	Bill('account2','xxxxxxx')
-	Bill('account3','xxxxxxx')
+	range=int(sys.argv[1])
+	Bill('account_name','aws_account_id',range)
 
