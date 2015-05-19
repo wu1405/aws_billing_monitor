@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Billing Report</title>
+      <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+      <link rel="stylesheet" type="text/css" media="all" href="/static/calendar2/daterangepicker-bs3.css" />
+      <script type="text/javascript" src="/static/calendar2/jquery-1.8.3.min.js"></script>
+      <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="/static/calendar2/moment.js"></script>
+      <script type="text/javascript" src="/static/calendar2/daterangepicker.js"></script>
+
+      <script src="/static/highcharts/js/highcharts.js"></script>
+      <script src="/static/highcharts/js/modules/exporting.js"></script>
+
+<script>
+$(function () {
+    $('#container').highcharts({
+        title: {
+            text: 'AWS BILLING Total',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'mobo,voga,cypay',
+            x: -20
+        },
+        xAxis: {
+        //      categories:['2015-03-20', '2015-03-21', '2015-03-22', '2015-03-23', '2015-03-24', '2015-03-25']
+                categories: {{ date_result|safe }}
+                },
+        yAxis: {
+            title: {
+                text: 'cost ($)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '$'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Mobo Billing Total',
+            //data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+            data: {{total_all_mobo}}
+        }, 
+                {
+                        name: 'Voga Billing Total',
+                        data: {{total_all_voga}}
+                },
+                {
+                        name: 'CYPAY Billing Total',
+                        data: {{total_all_cypay}}
+                }
+        ]
+    });
+});
+</script>
+
+<script>
+$(function () {
+    $('#container_daily').highcharts({
+        title: {
+            text: 'AWS BILLING Daily',
+            x: -20 //center
+        },
+        subtitle: {
+            text: 'mobo,voga,cypay',
+            x: -20
+        },
+        xAxis: {
+            categories: {{ date_result|safe }}
+        },
+        yAxis: {
+            title: {
+                text: 'cost ($)'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        tooltip: {
+            valueSuffix: '$'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'Mobo Billing Daily',
+            data: {{total_today_mobo}}
+        },
+                         {
+                        name: 'Voga Billing Daily',
+                        data: {{total_today_voga}} 
+                },
+                         {
+                        name: 'CYPAY Billing Daily',
+                        data: {{total_today_cypay}} 
+                },
+        ]
+    });
+});
+</script>
+
+   </head>
+   <body>
+
+      <div class="container">
+         <div class="span12">
+          <hr />
+
+            <h4>Date Range Picker</h4>
+            <div class="well">
+
+               <form class="form-horizontal" method="post">
+				 {% csrf_token %}
+                 <fieldset>
+                  <div class="control-group">
+                    <div class="controls">
+                     <div class="input-prepend input-group">
+                       <span class="add-on input-group-addon"><i class="glyphicon glyphicon-calendar fa fa-calendar"></i></span><input type="text" readonly="readonly" style="width: 200px" name="reservation" id="reservation" class="form-control" value="{{start}} - {{end}}" />
+					<input type="submit" style="margin-left:20px" value="查询" class="btn btn-info"> 
+                     </div>
+                    </div>
+                  </div>
+                 </fieldset>
+               </form>
+
+               <script type="text/javascript">
+               $(document).ready(function() {
+                  $('#reservation').daterangepicker(null, function(start, end, label) {
+                    console.log(start.toISOString(), end.toISOString(), label);
+                  });
+               });
+               </script>
+            </div>
+         </div>
+      </div>
+
+
+
+        <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+        <div id="container_daily" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+   </body>
+</html>
